@@ -1,0 +1,26 @@
+Transactions:
+
+0xb9316bbbae1cd21cd824de8651c72582261230724b1957abdeb466aa96a359c9
+ There are a lot of eth transfers to this address: 0xF4c64518EA10f995918A454158c6b61407EA345C
+I think it is a white hat response to the DAO hack: https://news.bitcoin.com/white-hacker-groupl-claim-4-4-million-controversial-dao-refund/
+
+0x4fc1580e7f66c58b7c26881cce0aab9c3509afe6e507527f30566fbf8039bcd0
+I think this is the creation of Uniswap V2
+
+0x552bc0322d78c5648c5efa21d2daa2d0f14901ad4b15531f1ab5bbe5674de34f
+This is the poly network hacker sending a message:
+IT WOULD HAVE BEEN A BILLION HACK IF I HAD MOVED REMAINING SHITCOINS! DID I JUST SAVE THE PROJECT?
+NOT SO INTERESTED IN MONEY, NOW CONSIDERING RETURNING SOME TOKENS OR JUST LEAVING THEM HERE
+
+0x7a026bf79b36580bf7ef174711a3de823ff3c93c65304c3acc0323c77d62d0ed
+This is the Poly Network hacker returning the 96M DAI, not sure why there’s an additional address instead of them transferring directly to the Poly Network Multisig?
+
+0x814e6a21c8eb34b62a05c1d0b14ee932873c62ef3c8575dc49bcf12004714eda
+This potentially looks like the Poly Network hacker being paid a bug bounty?
+
+Largest acct balance on ethereal? https://etherscan.io/accounts
+Eth2 address, then wrapped ethereum, then finance
+
+0x1db3439a222c519ab44bb1144fc28167b4fa6ee6 is just some guy’s address 👀
+
+0x000000000000000000000000000000000000dEaD is a burn address
