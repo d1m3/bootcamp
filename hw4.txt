@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+contract VolcanoCoin {
+
+    uint total_supply;
+    address owner;
+    mapping (address => uint) balance;
+    mapping (address => Payment[])  usersPayments;
+    
+    event supplyChange(uint indexed);
+    event transferOccured(uint amount, address receiver);
+    
+    struct Payment {
+        address recipientAddress;
+        uint paymentAmount;
+    }
+    
+    
+    
+    constructor() {
+        owner = msg.sender;
+        total_supply = 10000;
+        balance[owner] = total_supply;
+    }
+    
+    modifier onlyOwner() {
+        if(msg.sender == owner) {
+            _;
+        }
+    }
+    
+    function getSupply() public view returns (uint) {
+        return total_supply;
+    }
+    
+    function increaseSupply() public onlyOwner {
+        total_supply += 1000;
+        emit supplyChange(total_supply);
+    }
+    //two possibilities for a contract to access the balance: an internal function which means the child contracts can call it
+    //or a private function (which only the contract can call it), making the mapping public would automatically create a getter function
+    function getBalance(address holderAddress) internal view returns (uint) {
+        return balance[holderAddress];
+    }
+    //sender's address unecessary because it is included in msg.sender
+    function transfer(uint transferAmount, address recipient) public {
+        require(balance[msg.sender] >= transferAmount);
+        balance[msg.sender] = balance[msg.sender] - transferAmount;
+        balance[recipient] = transferAmount;
+        emit transferOccured(transferAmount, recipient);
+        
+        Payment memory payment = Payment(recipient,transferAmount);
+        usersPayments[msg.sender].push(payment);
+        
+    }
+}
