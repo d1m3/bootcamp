@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts@4.2.0/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts@4.2.0/access/Ownable.sol";
+
+contract VolcanoCoin is ERC20("volcanoCoin","vCOIN"), Ownable {
+
+    uint total_supply;
+    mapping (address => Payment[]) public usersPayments;
+    
+    event supplyChange(uint indexed);
+    event transferOccured(uint amount, address receiver);
+    
+    struct Payment {
+        address recipientAddress;
+        uint paymentAmount;
+    }
+    
+    constructor() {
+        total_supply = 10000;
+        _mint(msg.sender, total_supply);
+    }
+
+    function getSupply() public view returns (uint) {
+        return total_supply;
+    }
+    
+    function increaseSupply(uint supplyIncreaseAmount) public onlyOwner {
+        _mint(msg.sender, supplyIncreaseAmount);
+        emit supplyChange(total_supply);
+    }
+    
+    //using override to add functionality to the erc20 transfer function (also super to extend it)
+    function transfer( address recipient,uint amount) public override returns(bool) {
+        emit transferOccured(amount, recipient);
+        
+        Payment memory payment = Payment(recipient,amount);
+        usersPayments[msg.sender].push(payment);
+        
+        return super.transfer(recipient,amount);
+
+        
+    }
+}
