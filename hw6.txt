@@ -1,0 +1,65 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts@4.2.0/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts@4.2.0/access/Ownable.sol";
+
+contract VolcanoToken is ERC721, Ownable {
+    uint256 public tokenID=0;
+    mapping (address => tokenMetadata[]) public tokenOwnership;
+
+   struct tokenMetadata {
+        uint timestamp;
+        uint256 tokenId;
+        string tokenURI;
+    }
+
+    constructor() ERC721("volcanoToken","v") {
+    }
+    
+    function mint() public {
+        
+        ERC721._safeMint(msg.sender,tokenID);
+        tokenMetadata memory newTokenMetadata = tokenMetadata(block.timestamp,tokenID,'tokenURIplaceholder');
+        tokenOwnership[msg.sender].push(newTokenMetadata);
+        tokenID+=1;
+    }
+    
+    function removeBurnedToken(uint tokenid) internal {
+        uint arrayLength = tokenOwnership[msg.sender].length;
+        for (uint i=0; i<arrayLength; i++) {
+            if (tokenOwnership[msg.sender][i].tokenId == tokenid) {
+                delete tokenOwnership[msg.sender][i];
+            }
+        } 
+        
+    }
+    
+    function removeTokenFromMapping(address senderAddress) internal {
+        delete tokenOwnership[senderAddress];
+    }
+    
+    function burn(uint tokenid) public {
+        require(msg.sender == ERC721.ownerOf(tokenid));
+        ERC721._burn(tokenid);
+        removeBurnedToken(tokenid);
+        removeTokenFromMapping(msg.sender);
+        
+    }
+    
+    function tokenURI(uint tokenid) public view override returns (string memory) {
+        require(ERC721._exists(tokenid), "ERC721Metadata: URI query for nonexistent token");
+        
+        //hacky way of getting tokenURI because the only place we store it is in the array within the mapping of tokenOwnership
+        string memory tokenURIplaceholder;
+        uint arrayLength = tokenOwnership[msg.sender].length;
+        for (uint i=0; i<arrayLength; i++) {
+            if (tokenOwnership[msg.sender][i].tokenId==tokenid) {
+                tokenURIplaceholder = tokenOwnership[msg.sender][i].tokenURI;
+            }
+        }
+        return tokenURIplaceholder;
+    }
+    
+    
+}
